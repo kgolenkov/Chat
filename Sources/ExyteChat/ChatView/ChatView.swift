@@ -46,7 +46,7 @@ public struct ChatView<MessageContent: View, InputViewContent: View>: View {
 
     private let sections: [MessagesSection]
     private let ids: [String]
-    private let didSendMessage: ((DraftMessage) -> Void)?
+    private var didSendMessage: (DraftMessage) -> Void
 
     // MARK: - View builders
 
@@ -243,12 +243,16 @@ public struct ChatView<MessageContent: View, InputViewContent: View>: View {
             globalFocusState.focus = nil
         }
         .onAppear {
-            viewModel.didSendMessage = didSendMessage
-            inputViewModel.didSendMessage = { value in
-                didSendMessage?(value)
-                DispatchQueue.main.asyncAfter(deadline: .now() + 0.3) {
-                    NotificationCenter.default.post(name: .onScrollToBottom, object: nil)
-                }
+            setDidSendClosure(didSendMessage)
+        }
+    }
+
+    private func setDidSendClosure(_ closure: @escaping (DraftMessage) -> Void) {
+        viewModel.didSendMessage = closure
+        inputViewModel.didSendMessage = { value in
+            closure(value)
+            DispatchQueue.main.asyncAfter(deadline: .now() + 0.3) {
+                NotificationCenter.default.post(name: .onScrollToBottom, object: nil)
             }
         }
     }
