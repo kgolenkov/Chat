@@ -46,7 +46,7 @@ public struct ChatView<MessageContent: View, InputViewContent: View>: View {
 
     private let sections: [MessagesSection]
     private let ids: [String]
-    private let didSendMessage: (DraftMessage) -> Void
+    private let didSendMessage: ((DraftMessage) -> Void)?
 
     // MARK: - View builders
 
@@ -245,7 +245,7 @@ public struct ChatView<MessageContent: View, InputViewContent: View>: View {
         .onAppear {
             viewModel.didSendMessage = didSendMessage
             inputViewModel.didSendMessage = { value in
-                didSendMessage(value)
+                didSendMessage?(value)
                 DispatchQueue.main.asyncAfter(deadline: .now() + 0.3) {
                     NotificationCenter.default.post(name: .onScrollToBottom, object: nil)
                 }
