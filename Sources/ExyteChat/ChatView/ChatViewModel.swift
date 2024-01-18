@@ -14,8 +14,8 @@ final class ChatViewModel: ObservableObject {
 
     @Published var messageMenuRow: MessageRow?
 
-    public var didSendMessage: (DraftMessage) -> Void = {_ in}
-    
+    public var didSendMessage: ((DraftMessage) -> Void)? = {_ in}
+
     func presentAttachmentFullScreen(_ attachment: Attachment) {
         fullscreenAttachmentItem = attachment
         fullscreenAttachmentPresented = true
@@ -27,6 +27,6 @@ final class ChatViewModel: ObservableObject {
     }
 
     func sendMessage(_ message: DraftMessage) {
-        didSendMessage(message)
+        didSendMessage?(message)
     }
 }
