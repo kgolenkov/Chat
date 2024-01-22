@@ -195,7 +195,7 @@ public struct ChatView<MessageContent: View, InputViewContent: View>: View {
                showMessageMenuOnLongPress: showMessageMenuOnLongPress,
                tapAvatarClosure: tapAvatarClosure,
                messageUseMarkdown: messageUseMarkdown,
-               sections: sections,
+               initialSections: sections,
                ids: ids
         )
         .onStatusBarTap {
